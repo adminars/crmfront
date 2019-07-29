@@ -29,7 +29,10 @@ export default {
     /*
      ** Plugins to load before mounting the App
      */
-    plugins: [],
+    plugins: [
+        '~/plugins/lodash.js',
+        '~/plugins/vee-validate.js',
+    ],
     /*
      ** Nuxt.js dev-modules
      */

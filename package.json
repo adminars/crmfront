@@ -13,8 +13,10 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.5.4",
     "@nuxtjs/moment": "^1.2.0",
+    "lodash": "^4.17.15",
     "moment": "^2.24.0",
-    "nuxt": "^2.0.0"
+    "nuxt": "^2.0.0",
+    "vee-validate": "^2.2.13"
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.0.0",
