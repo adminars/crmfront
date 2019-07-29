@@ -1,6 +1,6 @@
-# testing
+# crmFront
 
-> My superior Nuxt.js project
+> My classy Nuxt.js project
 
 ## Build Setup
 

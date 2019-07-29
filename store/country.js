@@ -18,19 +18,19 @@ export const getters = {
    * @param state
    * @returns {*}
    */
-  countries: (state) => {
+  countries: state => {
     return state.countries
   }
 }
 export const actions = {
   countryListAsync({ commit }, params) {
-    // let searchData = ''
+    let searchData = ''
     _.each(params, (value, key) => {
-      if (key !== 'page') {
-        //  searchData += `&${key}=${value}`
+      if (key != 'page') {
+        searchData += `&${key}=${value}`
       }
     })
-    return this.$axios.$get('country').then((response) => {
+    return this.$axios.$get('country').then(response => {
       commit('SET_COUNTRY', response)
     })
   }

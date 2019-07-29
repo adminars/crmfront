@@ -4,7 +4,7 @@ export const state = () => ({
     data: {},
     meta: {},
     link: {}
-  }
+  },
 })
 export const mutations = {
   /**
@@ -38,16 +38,16 @@ export const getters = {
    * @param state
    * @returns {*}
    */
-  opportunities: (state) => {
+  opportunities: state => {
     return state.opportunities
   },
-  meta: (state) => {
+  meta: state => {
     return state.meta
   },
   /**
    * return @opportunity.link
    */
-  link: (state) => {
+  link: state => {
     return state.opportunities.link
   }
 }
@@ -58,13 +58,13 @@ export const actions = {
    * @param {*} params
    */
   opportunitylistAsync({ commit }, params) {
-    // let searchData = ''
+    let searchData = ''
     _.each(params, (value, key) => {
-      if (key !== 'page') {
-        // searchData += `&${key}=${value}`
+      if (key != 'page') {
+        searchData += `&${key}=${value}`
       }
     })
-    return this.$axios.$get('opportunity').then((response) => {
+    return this.$axios.$get('opportunity').then(response => {
       commit('SET_OPPORTUNITIES', response.data)
       commit('SET_META', response.meta)
       commit('SET_LINK', response.links)
