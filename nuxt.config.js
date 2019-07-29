@@ -1,5 +1,7 @@
 import colors from 'vuetify/es5/util/colors'
+import dotenv from 'dotenv'
 
+dotenv.config()
 export default {
   mode: 'universal',
   /*
@@ -42,7 +44,7 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: [],
+  modules: ['@nuxtjs/axios'],
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module
@@ -64,6 +66,9 @@ export default {
       }
     }
   },
+  axios: {
+    baseURL: process.env.API_URL
+  },
   /*
    ** Build configuration
    */
@@ -71,6 +76,16 @@ export default {
     /*
      ** You can extend webpack config here
      */
-    extend(config, ctx) {}
+    extend(config, ctx) {
+      config.module.rules.push({
+        enforce: 'pre',
+        test: /\.(js|vue)$/,
+        loader: 'eslint-loader',
+        exclude: /(node_modules)/,
+        options: {
+          fix: true
+        }
+      })
+    }
   }
 }

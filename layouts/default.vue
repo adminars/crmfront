@@ -1,5 +1,5 @@
 <template>
-  <v-app light>
+  <v-app>
     <v-navigation-drawer
       v-model="drawer"
       :mini-variant="miniVariant"
@@ -70,6 +70,7 @@ export default {
     return {
       clipped: false,
       drawer: false,
+      dialog: false,
       fixed: false,
       items: [
         {
