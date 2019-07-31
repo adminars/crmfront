@@ -88,5 +88,18 @@ export const actions = {
             commit('SET_META', response.meta)
             commit('SET_LINK', response.links)
         })
+    },
+
+    storeLinepartner({ commit }, { data, config }) {
+        //console.log('i came here with data')
+        // console.log(data)
+        return this.$axios
+            .post(`lineRequest`, data, config)
+            .then(response => {
+               // commit('SET_SHOW', response.data)
+               // console.log('i am response')
+               // console.log(response.data)
+                return response
+            })
     }
 }

@@ -17,7 +17,7 @@
            <td class="text-xs-right">{{ props.item.message !== null ? (props.item.message):'rabi' }}</td>
 
         </template>
-         <template v-slot:item.action="{ item }"><v-btn small color="primary" @click="check(item)">ラインID追加します</v-btn> </template>
+          <template v-slot:item.action="{ item }"><!--{{ item }}--><div v-if="item.status==0"> <v-btn small color="primary" @click="check(item)">ラインID追加します</v-btn></div> <div v-else color="success"> すでに登録してあります </div> </template>
       </v-data-table>
     </v-flex>
 
@@ -41,27 +41,27 @@
                 name ='partner_name'
                 v-validate="'required'"
                 data-vv-as="パトナー名前"
-                v-model="dialogForm.partnerName"/>
+                v-model="dialogForm.partner_name"/>
                 <span style="color:red;">{{ errors.first('partner_name') }}</span>
                 <v-text-field
                 label="パトナーラインID*"
                 type="text"
                 disabled
                 required
-                v-model="dialogForm.partnerLineid"
-                 name ='partnerLineid'
+                v-model="dialogForm.lineId"
+                 name ='lineId'
                 v-validate="'required'"
                 data-vv-as="パトナーラインID"/>
-                 <span style="color:red;">{{ errors.first('partnerLineid') }}</span>
+                 <span style="color:red;">{{ errors.first('lineId') }}</span>
                 <v-text-field
                 label="パトナーアカウントID*"
                 type="text"
                 required
-                v-model="dialogForm.partnerId"
-                 name ='partnerId'
+                v-model="dialogForm.partnerid"
+                 name ='partnerid'
                 v-validate="'required'"
                 data-vv-as="パトナーアカウントID"/>
-                 <span style="color:red;">{{ errors.first('partnerId') }}</span>
+                 <span style="color:red;">{{ errors.first('partnerid') }}</span>
               </v-flex>
             </v-layout>
           </v-container>
@@ -77,18 +77,16 @@
 
     <v-snackbar
       v-model="snackbar.snackbar"
-     :vertical="mode === 'vertical'"
-       :right="x === 'right'"
-    >
+      :color="snackbar.color">
       {{ snackbar.text }}
       <v-btn
-        color="error"
-        text
+        color="primary"
         @click="snackbar.snackbar = false"
       >
-        Close
+        閉じる
       </v-btn>
     </v-snackbar>
+
     </v-layout>
 
 </template>
@@ -118,13 +116,14 @@
       return {
         snackbar:{
           snackbar:false,
-          text:'please check your input'
+          text:'正しく入力して下さい',
+          color:'error'
         },
         dialog: false,
         dialogForm :{
-          partnerName:'',
-          partnerId:'',
-          partnerLineid:''
+          partner_name:'',
+          partnerid:'',
+          lineId:''
         },
         message:'message',
         selected: [],
@@ -141,7 +140,7 @@
           },
            { text: 'アカウントID', value: 'crmId' },
           { text: 'メッセージ', value: 'message' },
-           { text: 'action', value: 'action' },
+           { text: 'action', value: 'action'  },
         ]
       }
     },
@@ -154,15 +153,43 @@
       check(item){
         console.log(item)
         this.dialog = true
-        this.dialogForm.partnerLineid = item.user_id
-         this.dialogForm.partnerName = item.message
-         this.dialogForm.partnerId=item.crmId
+        this.dialogForm.lineId = item.user_id
+         this.dialogForm.partner_name = item.message
+         this.dialogForm.partnerid=item.crmId
       },
       handleSavePartner(){
         this.$validator.validateAll().then((success) => {
         if (success) {
-          alert('Saved.');
-          return
+          // alert('Saved.');
+          this.$store
+          .dispatch('partner/storeLinepartner', {
+            data: this.dialogForm
+          }) .then(response => {
+            this.snackbar.snackbar=true
+            this.$store.dispatch('linelog/LineMessageLogAsync', {})
+            this.snackbar.color='success'
+            this.snackbar.text = '登録されました',
+
+            this.dialog=false
+          }).catch(err => {
+             const errs = []
+             _.forEach(err.response.data, (messages, field) => {
+               _.forEach(messages, message => {
+                errs.push(
+                  _.merge(
+                    {},
+                    {
+                      field: field,
+                      msg: message
+                    }
+                  )
+                )
+              })
+             })
+             if (errs.length > 0) {
+              this.errors.add(errs)
+            }
+          })
         }
        this.snackbar.snackbar=true
       });

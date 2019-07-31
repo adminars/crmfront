@@ -1,26 +1,29 @@
 {
-  "name": "crmFront",
-  "version": "1.0.0",
-  "description": "My classy Nuxt.js project",
-  "author": "rabi",
-  "private": true,
-  "scripts": {
-    "dev": "nuxt",
-    "build": "nuxt build",
-    "start": "nuxt start",
-    "generate": "nuxt generate"
-  },
-  "dependencies": {
-    "@nuxtjs/axios": "^5.5.4",
-    "@nuxtjs/moment": "^1.2.0",
-    "lodash": "^4.17.15",
-    "moment": "^2.24.0",
-    "nuxt": "^2.0.0",
-    "vee-validate": "^2.2.13"
-  },
-  "devDependencies": {
-    "@nuxtjs/vuetify": "^1.0.0",
-    "dotenv": "^8.0.0",
-    "nodemon": "^1.18.9"
-  }
+    "name": "crmFront",
+    "version": "1.0.0",
+    "description": "My classy Nuxt.js project",
+    "author": "rabi",
+    "private": true,
+    "scripts": {
+        "dev": "nuxt",
+        "build": "nuxt build",
+        "start": "nuxt start",
+        "generate": "nuxt generate"
+    },
+    "dependencies": {
+        "@nuxtjs/axios": "^5.5.4",
+        "@nuxtjs/moment": "^1.2.0",
+        "lodash": "^4.17.15",
+        "moment": "^2.24.0",
+        "nuxt": "^2.0.0",
+        "vee-validate": "^2.2.13",
+        "vue": "^2.6.10"
+    },
+    "devDependencies": {
+        "@nuxtjs/vuetify": "^1.0.0",
+        "dotenv": "^8.0.0",
+        "stylus": "^0.54.5",
+        "stylus-loader": "^3.0.2",
+        "nodemon": "^1.18.9"
+    }
 }

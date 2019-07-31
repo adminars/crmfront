@@ -2,7 +2,7 @@ import colors from 'vuetify/es5/util/colors'
 import dotenv from 'dotenv'
 dotenv.config()
 export default {
-    mode: 'spa',
+    mode: 'universal',
     /*
      ** Headers of the page
      */
@@ -43,8 +43,8 @@ export default {
      ** Nuxt.js modules
      */
     modules: [
-        '@nuxtjs/vuetify',
-        '@nuxtjs/axios', ['@nuxtjs/moment', ['ja']]
+        '@nuxtjs/axios',
+        '@nuxtjs/moment',
     ],
     /*
      ** vuetify module configuration
@@ -77,6 +77,8 @@ export default {
         /*
          ** You can extend webpack config here
          */
-        extend(config, ctx) {}
+        extend(config, ctx) {
+
+        }
     }
 }
