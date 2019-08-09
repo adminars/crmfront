@@ -86,8 +86,6 @@ export const actions = {
             }
         })
         return this.$axios.$get('getlineeventlog').then(response => {
-            console.log('i came here')
-            console.log(response)
             commit('SET_LINELOG', response)
             commit('SET_META', response.meta)
             commit('SET_LINK', response.links)

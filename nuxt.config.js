@@ -18,6 +18,10 @@ export default {
             { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
         ]
     },
+    router: {
+        base: '/',
+        //middleware: ['auth'],
+    },
     /*
      ** Customize the progress-bar color
      */
@@ -25,14 +29,39 @@ export default {
     /*
      ** Global CSS
      */
-    css: [],
+    css: ['~/assets/style/app.scss'],
     /*
      ** Plugins to load before mounting the App
      */
     plugins: [
         '~/plugins/lodash.js',
         '~/plugins/vee-validate.js',
+        '~/plugins/axios.js',
     ],
+    auth: {
+        strategies: {
+            local: {
+                endpoints: {
+                    login: {
+                        url: 'login',
+                        method: 'post',
+                        propertyName: 'token'
+                    },
+                    user: {
+                        url: 'me',
+                        method: 'get',
+                        propertyName: 'data'
+                    },
+                    logout: 'logout',
+                    method: 'get'
+                }
+            }
+        },
+        redirect: {
+            login: '/auth/login',
+            home: '/'
+        }
+    },
     /*
      ** Nuxt.js dev-modules
      */
@@ -45,6 +74,7 @@ export default {
     modules: [
         '@nuxtjs/axios',
         '@nuxtjs/moment',
+        '@nuxtjs/auth'
     ],
     /*
      ** vuetify module configuration
@@ -68,7 +98,9 @@ export default {
         }
     },
     axios: {
-        baseURL: process.env.API_URL
+        baseURL: process.env.API_URL,
+        proxyHeaders: false,
+        credentials: false
     },
     /*
      ** Build configuration

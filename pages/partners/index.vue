@@ -3,7 +3,7 @@
 
 
     <v-flex>
-       <h1>パトナーメッセージログ </h1>
+       <h1 class="titleCrm">パトナーメッセージログ </h1>
       <v-data-table
         :headers="headers"
         :items="list.data"

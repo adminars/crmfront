@@ -1,34 +1,18 @@
 <template>
   <v-app>
-    <v-navigation-drawer
-      v-model="drawer"
-      :mini-variant="miniVariant"
-      :clipped="clipped"
-      fixed
-      app
-    >
+    <v-navigation-drawer v-model="drawer" :mini-variant="miniVariant" :clipped="clipped" fixed app>
       <v-list>
-        <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
-          router
-          exact
-        >
+        <v-list-item v-for="(item, i) in items" :key="i" :to="item.to" router exact>
           <v-list-item-action>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
+            <v-list-item-title class="crmNavigationMenu" v-text="item.title" />
           </v-list-item-content>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar
-      :clipped-left="clipped"
-      fixed
-      app
-    >
+    <v-app-bar :clipped-left="clipped" fixed app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title v-text="title" />
       <v-spacer />
@@ -38,10 +22,7 @@
         <nuxt />
       </v-container>
     </v-content>
-    <v-footer
-      :fixed="fixed"
-      app
-    >
+    <v-footer :fixed="fixed" app>
       <span>&copy; 2019</span>
     </v-footer>
   </v-app>
@@ -49,38 +30,39 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       clipped: false,
       drawer: false,
       fixed: false,
       items: [
         {
-          icon: 'mdi-apps',
-          title: 'Welcome',
-          to: '/'
+          icon: "mdi-chart-bubble",
+          title: "ログイン",
+          to: "/auth/login"
         },
         {
-          icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire'
+          icon: "mdi-chart-bubble",
+          title: "ライン管理",
+          to: "/partners"
         },
         {
-          icon: 'mdi-chart-bubble',
-          title: 'パトナーライン管理',
-          to: '/partners'
-        },
-        {
-          icon: 'mdi-chart-bubble',
-          title: 'アカウントチャットワーク管理',
-          to: '/chatwork'
+          icon: "mdi-chart-bubble",
+          title: "案件一覧",
+          to: "/opportunity"
         }
+
+        // {
+        //   icon: "mdi-chart-bubble",
+        //   title: "アカウントチャットワーク管理",
+        //   to: "/auth/register"
+        // }
       ],
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: 'クラピタル'
-    }
+      title: "クラピタル"
+    };
   }
-}
+};
 </script>
