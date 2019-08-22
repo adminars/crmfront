@@ -1,62 +1,108 @@
 <template>
-  <v-layout>
-    <v-card class="mx-auto" max-width="400">
-      <v-img
-        class="white--text"
-        height="200px"
-        src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
-      >
-        <v-card-title class="align-end fill-height">Top 10 Australian beaches</v-card-title>
-      </v-img>
+  <v-container>
+    <v-card class="ma-2 mx-auto" style="width:500px; aligh:center">
+      <v-card-title>
+        <div class="text-center">ログイン</div>
+      </v-card-title>
+      <hr />
 
       <v-card-text>
         <form>
+          <div class="crm_error">{{ responseError }}</div>
           <v-text-field
-            v-model="email"
-            v-validate="'required|email'"
-            :error-messages="errors.collect('email')"
+            v-model="extention"
+            v-validate="'required|max:4|integer'"
+            :error-messages="errors.collect('extention')"
+            label="端末番号"
+            data-vv-name="extention"
+            data-vv-as="端末番号"
+          />
+          <v-text-field
+            v-model="username"
+            v-validate="'required'"
+            :error-messages="errors.collect('username')"
             label="ユーザー名"
-            data-vv-name="email"
-            data-vv-as="メール"
-          ></v-text-field>
+            data-vv-name="username"
+            data-vv-as="ユーザー名"
+          />
+
           <v-text-field
             v-model="password"
-            v-validate="'required|email'"
-            :error-messages="errors.collect('email')"
+            v-validate="'required'"
+            :error-messages="errors.collect('password')"
             label="パスワード"
             type="password"
-            data-vv-as="パース"
-          ></v-text-field>
-          <v-btn class="mr-4" @click="submit">ログイン</v-btn>
-          <v-btn @click="clear">クリア</v-btn>
+            data-vv-name="password"
+            data-vv-as="パスワード"
+          />
+
+          <div class="text-center">
+            <v-btn color="success" @click="login">ログイン</v-btn>
+          </div>
+          <!-- <v-btn @click="clear">クリア</v-btn> -->
         </form>
       </v-card-text>
-
-      <v-card-actions>
-        <v-btn text color="orange">Share</v-btn>
-        <v-btn text color="orange">Explore</v-btn>
-      </v-card-actions>
     </v-card>
-  </v-layout>
+    <v-snackbar v-model="snackbar.snackbar" :color="snackbar.color">
+      <div style="color:white">{{ snackbar.text }}</div>
+      <v-btn color="primary" @click="snackbar.snackbar = false">閉じる</v-btn>
+    </v-snackbar>
+  </v-container>
 </template>
 <script>
-export default {
-  data: () => ({
-    email: "",
-    password: ""
-  }),
+import nuxtend from "nuxtend";
+
+export default nuxtend({
+  data() {
+    return {
+      snackbar: {
+        snackbar: false,
+        text: "正しく入力して下さい",
+        color: "error"
+      },
+      username: "",
+      password: "",
+      extention: "",
+      return_data: {},
+      responseError: ""
+    };
+  },
 
   methods: {
-    submit() {
-      this.$validator.validateAll().then(success => {});
-    },
-    clear() {
-      this.name = "";
-      this.email = "";
-      this.select = null;
-      this.checkbox = null;
-      this.$validator.reset();
+    login() {
+      this.responseError = "";
+      this.$validator.validateAll().then(success => {
+        if (success) {
+          this.$auth
+            .loginWith("local", {
+              data: {
+                username: this.username,
+                password: this.password,
+                extension: this.extention
+              }
+            })
+            .then(response => {
+              console.log("loginSuccess");
+              console.log(response);
+              // this.$router.go(-1);
+              // this.$router.push(this.$i18n.path("/partners?login=true"));
+            })
+            .catch(err => {
+              if ((err.response.status = 422) || (err.response.status = 401)) {
+                this.responseError = "please check you data"; //err.response.data.error;
+              }
+              // console.log("i came here");
+
+              console.log(err.response.status);
+            });
+          console.log(this.username);
+          console.log(this.password);
+          console.log(this.extention);
+        } else {
+          this.snackbar.snackbar = true;
+        }
+      });
     }
   }
-};
+});
 </script>

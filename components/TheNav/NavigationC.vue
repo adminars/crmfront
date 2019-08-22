@@ -60,9 +60,13 @@
         <v-btn text>Link 3</v-btn>
       </v-toolbar-items>
     </v-toolbar>
+    <div>{{ authorised }}</div>
+    <div>{{ user }}</div>
   </div>
 </template>
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   data() {
     return {
@@ -105,6 +109,12 @@ export default {
       bg: false,
       extensionHeight: 48
     };
+  },
+  computed: {
+    ...mapGetters({
+      authorised: "isAuthenticated",
+      user: "loggedInUser"
+    })
   }
 };
 </script>
