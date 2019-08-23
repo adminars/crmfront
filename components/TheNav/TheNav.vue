@@ -90,6 +90,11 @@ export default {
         icon: "mdi-chart-bubble",
         title: "ログイン",
         to: "/auth/login"
+      },
+      {
+        icon: "mdi-chart-bubble",
+        title: "ライン管理",
+        to: "/partners"
       }
     ],
     items: [

@@ -15,13 +15,15 @@
         </v-col>
         <v-col>
           <v-btn @click="getAnken(item,key);showAnken = !showAnken">{{item.totalOppo}}案件</v-btn>
-          <v-btn>{{ (!_.isNull(item.total_partners)) ? item.total_partners : '0' }} パトナー</v-btn>
+          <v-btn
+            @click="getPartner(item);showPartner = !showPartner"
+          >{{ (!_.isNull(item.total_partners)) ? item.total_partners : '0' }} パトナー</v-btn>
           <v-btn>P候補</v-btn>
-          <v-btn>
+          <v-btn @click="getMemo(item);showMemo = !showMemo">
             {{ (!_.isEmpty(item.totalchaku[0])) && (!_.isNull((item.totalchaku[0].itimemo))) ? item.totalchaku[0].itimemo: '0' }}
             一メモ
           </v-btn>
-          <v-btn>
+          <v-btn @click="getCMemo(item);showCMemo = !showCMemo">
             {{ (!_.isEmpty(item.totalchaku[0])) && (!_.isNull((item.totalchaku[0].totalMemo))) ? item.totalchaku[0].totalMemo: '0' }}
             着信
           </v-btn>
@@ -36,15 +38,31 @@
           </div>
         </v-row>
         <!-- this is partner-->
-        <!--
-        <v-row v-if="isAnken == item.id && showAnken" class="mt-3 mr-3 ml-3 mb-3">
+
+        <v-row v-if="isPartner == item.id && showPartner" class="mt-3 mr-3 ml-3 mb-3">
           <div>
-            <v-row v-for="(opp) in oppo" :key="opp.id" class="ml-3">
-              <showAnken :opportunity="opp" :initial="item" />
+            <v-row v-for="(pat) in phartner" :key="pat.id" class="ml-3">
+              <showPartner :partner="pat" :initial="item" />
             </v-row>
           </div>
         </v-row>
-        -->
+        <!-- memos -->
+        <v-row v-if="isMemo == item.id && showMemo" class="mt-3 mr-3 ml-3 mb-3">
+          <div>
+            <v-row v-for="(mem) in pmemos" :key="mem.id" class="ml-3">
+              <showMemo :memo="mem" :initial="item" />
+            </v-row>
+          </div>
+        </v-row>
+        <v-row v-if="isCMemo == item.id && showCMemo" class="mt-3 mr-3 ml-3 mb-3">
+          <div>
+            <v-row v-for="(cmem) in cmemos" :key="cmem.id" class="ml-3">
+              <ShowChakuMemo :cmem="cmem" :initial="item" />
+            </v-row>
+          </div>
+          <!-- {{ cmemos }} -->
+        </v-row>
+        <!-- {{ cmemos }} -->
       </v-row>
     </div>
   </v-container>
@@ -54,6 +72,10 @@ import nuxtend from "nuxtend";
 import { mapGetters } from "vuex";
 import items from "~/components/Opportunity/item";
 import ShowAnken from "~/components/Opportunity/ShowAnken";
+import showPartner from "~/components/Partners/ShowPartner";
+import showMemo from "~/components/Memos/ShowMemo";
+import ShowChakuMemo from "~/components/Memos/ShowChakuMemo";
+
 //import { ToggleButton } from "vue-js-toggle-button";
 
 export default nuxtend({
@@ -71,22 +93,34 @@ export default nuxtend({
   computed: {
     ...mapGetters({
       lists: "ainori/ainori",
-      oppo: "ainori/anken"
+      oppo: "ainori/anken",
+      phartner: "partner/phartner",
+      pmemos: "memos/pmemos",
+      cmemos: "memos/cmemo"
     })
   },
   components: {
     // ToggleButton,
     items,
-    ShowAnken
+    ShowAnken,
+    showPartner,
+    showMemo,
+    ShowChakuMemo
   },
   data() {
     return {
+      isPartner: 0,
+      isMemo: 0,
+      isAnken: 0,
+      isCMemo: 0,
+      showCMemo: false,
+      showAnken: false,
+      showMemo: false,
+      showPartner: false,
       message: "message",
       session: {},
       //  showAnken: false,
       opportunity: {},
-      isAnken: 0,
-      showAnken: false,
 
       slideritems: [
         {
@@ -104,28 +138,57 @@ export default nuxtend({
   methods: {
     getAnken(item) {
       this.isAnken = item.id;
-      //  this.shoehidden = true;
-      // showAnken =! showAnken
-      // console.log(this.showAnken);
-      //   console.log(this.oppo);
-      //   this.showAnken = true;
-      //   this.opportunity = this.oppo;
-      //  if (this.showAnken == false) {
-      //    console.log("i am false");
-      //    this.opportunity = this.oppo;
-      //  }
-      //this.showAnken == false ? true : false;
+      this.isPartner = 0;
+      this.isMemo = 0;
+      this.isCMemo = 0;
+
+      this.showPartner = false;
+      this.showMemo = false;
+      this.showCMemo = false;
       this.$store.dispatch("ainori/asyncOpportunityByPhone", {
         phone: item.tel_number
       });
-      //console.log(item.tel_number);
     },
-    check() {
-      this.session = window.localStorage;
-      localStorage.setItem("rabi", "neupane");
-      console.log(window.localStorage);
-      localStorage.removeItem("rabi");
-      console.log(window.localStorage);
+    getPartner(item) {
+      this.isPartner = item.id;
+      this.isMemo = 0;
+      this.isAnken = 0;
+      this.isCMemo = 0;
+
+      this.showAnken = false;
+      this.showMemo = false;
+      this.showCMemo = false;
+
+      this.$store.dispatch("partner/asyncPartnerByphone", {
+        phone: item.tel_number //item.tel_number
+      });
+    },
+    getMemo(item) {
+      this.isMemo = item.id;
+      this.isPartner = 0;
+      this.isAnken = 0;
+      this.isCMemo = 0;
+      this.showAnken = false;
+      this.showPartner = false;
+      this.showCMemo = false;
+
+      this.$store.dispatch("memos/asyncMemoByPhone", {
+        phone: item.kensaku_tel1
+        //memo_type: 2 //item.tel_number
+      });
+    },
+    getCMemo(item) {
+      this.isCMemo = item.id;
+      this.isPartner = 0;
+      this.isAnken = 0;
+      this.isMemo = 0;
+      this.showMemo = false;
+      this.showAnken = false;
+      this.showPartner = false;
+
+      this.$store.dispatch("memos/asyncMemoByPhoneTypeTwo", {
+        phone: item.kensaku_tel1
+      });
     },
     openEditor(slider) {
       slider.showEdit = true;

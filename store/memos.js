@@ -1,7 +1,7 @@
 import _ from "lodash";
 export const state = () => ({
-  ainori: {},
-  anken: {}
+  pmemos: {},
+  cmemo: {}
 });
 export const mutations = {
   /**
@@ -9,11 +9,16 @@ export const mutations = {
    * @param {*} state
    * @param {*} payLoad
    */
-  SET_AINORI(state, payLoad) {
-    state.ainori = payLoad;
+  SET_PMEMOS(state, payLoad) {
+    state.pmemos = payLoad;
   },
-  SET_ANKEN(state, payLoad) {
-    state.anken = payLoad;
+  /**
+   *
+   * @param {*} state
+   * @param {*} payLoad
+   */
+  SET_CMEMO(state, payLoad) {
+    state.cmemo = payLoad;
   }
 };
 export const getters = {
@@ -22,31 +27,15 @@ export const getters = {
    * @param state
    * @returns {*}
    */
-  ainori: state => {
-    return state.ainori;
+  pmemos: state => {
+    return state.pmemos;
   },
-  anken: state => {
-    return state.anken;
+  cmemo: state => {
+    return state.cmemo;
   }
 };
 export const actions = {
-  ainoriListAsync({ commit }, params) {
-    // console.log();
-    // console.log(sessionStorage);
-    // console.log(this.window.localStorage);
-    let searchData = "";
-    _.each(params, (value, key) => {
-      if (key != "page") {
-        searchData += `&${key}=${value}`;
-      }
-    });
-    return this.$axios
-      .$get("itijimemo?extention=" + params.extension)
-      .then(response => {
-        commit("SET_AINORI", response.data);
-      });
-  },
-  asyncOpportunityByPhone({ commit }, params) {
+  asyncMemoByPhone({ commit }, params) {
     // console.log(params);
     let searchData = "";
     _.each(params, (value, key) => {
@@ -55,10 +44,24 @@ export const actions = {
       }
     });
     return this.$axios
-      .$get("searchbyphone?phone=" + params.phone)
+      .$get("itijimemobyphone?phone=" + params.phone)
       .then(response => {
         // console.log(response.data);
-        commit("SET_ANKEN", response.data);
+        commit("SET_PMEMOS", response.data);
+      });
+  },
+  asyncMemoByPhoneTypeTwo({ commit }, params) {
+    let searchData = "";
+    _.each(params, (value, key) => {
+      if (key != "page") {
+        searchData += `&${key}=${value}`;
+      }
+    });
+    return this.$axios
+      .$get("itijimemobyphonetypetwo?phone=" + params.phone)
+      .then(response => {
+        // console.log(response.data);
+        commit("SET_CMEMO", response.data);
       });
   }
 };

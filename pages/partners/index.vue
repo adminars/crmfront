@@ -94,11 +94,12 @@ export default {
     return Promise.all([
       await store.dispatch("linelog/LineMessageLogAsync", {
         page: query.page || 1,
-        extention: localStorage.extention,
         ...query
       })
     ]);
   },
+  auth: false,
+
   computed: {
     ...mapGetters({
       list: "linelog/lineData"
