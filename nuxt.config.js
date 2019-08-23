@@ -39,6 +39,7 @@ export default {
     "~/plugins/lodash.js",
     "~/plugins/vee-validate.js",
     "~/plugins/axios.js"
+    // "~plugins/vue-js-toggle-button"
     //"~/plugins/auth.js"
   ],
   auth: {

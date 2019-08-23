@@ -50,6 +50,7 @@
   </v-container>
 </template>
 <script>
+import _ from "lodash";
 import nuxtend from "nuxtend";
 
 export default nuxtend({
@@ -73,6 +74,9 @@ export default nuxtend({
       this.responseError = "";
       this.$validator.validateAll().then(success => {
         if (success) {
+          window.localStorage.setItem("extention", this.extention);
+          //sessionStorage.setItem("key", "value");
+
           this.$auth
             .loginWith("local", {
               data: {
@@ -85,19 +89,26 @@ export default nuxtend({
               console.log("loginSuccess");
               console.log(response);
               // this.$router.go(-1);
-              // this.$router.push(this.$i18n.path("/partners?login=true"));
+              this.$router.push(this.$i18n.path("/ainori"));
             })
             .catch(err => {
-              if ((err.response.status = 422) || (err.response.status = 401)) {
+              if (
+                !_.isEmpty(err) &&
+                (err.response.status == 422 || err.response.status == 401)
+              ) {
+                window.localStorage.removeItem("extention");
+                sessionStorage.setItem("key", "value");
+
                 this.responseError = "please check you data"; //err.response.data.error;
               }
               // console.log("i came here");
 
-              console.log(err.response.status);
+              // console.log(err.response.status);
             });
           console.log(this.username);
           console.log(this.password);
           console.log(this.extention);
+          console.log(window.localStorage);
         } else {
           this.snackbar.snackbar = true;
         }

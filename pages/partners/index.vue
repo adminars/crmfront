@@ -94,6 +94,7 @@ export default {
     return Promise.all([
       await store.dispatch("linelog/LineMessageLogAsync", {
         page: query.page || 1,
+        extention: localStorage.extention,
         ...query
       })
     ]);

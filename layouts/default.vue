@@ -1,8 +1,8 @@
 <template>
   <VApp>
-    <tempalte>
+    <template>
       <the-nav />
-    </tempalte>
+    </template>
     <v-container>
       <nuxt />
     </v-container>
@@ -14,7 +14,7 @@
 
 <script>
 // import TheNav from "~/components/TheNav/Navigation";
-import TheNav from "~/components/TheNav/NavigationC";
+import TheNav from "~/components/TheNav/TheNav";
 
 export default {
   components: {
