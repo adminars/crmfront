@@ -2,8 +2,9 @@
   <div>
     <!-- <v-row v-for="(opp) in oppo" :key="opp.id" class="ml-3"> -->
     <v-row>
-      <v-row>
-        <v-col cols="12" class="pa-0 mt-3">
+
+
+        <v-col cols="12" class="pa-0 mt-3" >
           <v-row class="ml-2 mb-2" style="font-size:16px;font-weight:bold">
             <span>{{opp.id}}</span>
             <span class="ml-2">{{ opp.receipt_date }}</span>

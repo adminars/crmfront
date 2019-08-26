@@ -89,7 +89,8 @@ export default nuxtend({
               console.log("loginSuccess");
               console.log(response);
               // this.$router.go(-1);
-              this.$router.push(this.$i18n.path("/ainori"));
+               this.$router.push('/')
+             // this.$router.push(this.$i18n.path("/ainori"));
             })
             .catch(err => {
               if (

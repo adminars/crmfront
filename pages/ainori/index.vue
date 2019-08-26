@@ -8,7 +8,7 @@
         class="pa-0"
         style="line-height:1; border-spacing: -1em;padding: -0em; border-color:red;"
       >
-        <v-col cols="8" class="pa-0 mt-3">
+        <v-col cols="6" class="pa-0 mt-3">
           <span>{{item.created}}</span>
           <span style="font-weight:bold; font-size:16px">{{item.tel_number}}</span>
           <span>{{item.tel_dial}}</span>
@@ -30,13 +30,70 @@
         </v-col>
         <hr />
         <!-- this si anken-->
-        <v-row v-if="isAnken == item.id && showAnken" class="mt-3 mr-3 ml-3 mb-3">
+        <v-container v-if="isAnken == item.id && showAnken" class="mt-3 mr-3 ml-3 mb-3" flex>
+          <v-row class="text-center">
+            <v-col>
+              <v-btn
+                color="success"
+                v-if="createFrom"
+                @click="closeForm=!closeForm;createFrom=!createFrom; showFrom=!showFrom;showAnkenList=!showAnkenList"
+              >作成</v-btn>
+              <v-btn
+                color="warning"
+                v-if="closeForm"
+                @click="closeForm=!closeForm;createFrom=!createFrom; showAnkenList=!showAnkenList;showFrom=!showFrom"
+              >閉じる</v-btn>
+            </v-col>
+          </v-row>
+          <v-container v-if="showFrom" class="grey lighten-5 align-center">
+            <v-row class="mb-6" no-gutters>
+              <v-col sm="5" md="6">
+                <v-card class="pa-2" outlined tile>iotem</v-card>
+              </v-col>
+              <v-col sm="5" offset-sm="2" md="6" offset-md="0">
+                <v-card class="pa-2" outlined tile>value</v-card>
+              </v-col>
+            </v-row>
+            <v-row class="mb-6" no-gutters>
+              <v-col sm="5" md="6">
+                <v-card class="pa-2" outlined tile>iotem</v-card>
+              </v-col>
+              <v-col sm="5" offset-sm="2" md="6" offset-md="0">
+                <v-card class="pa-2" outlined tile>value</v-card>
+              </v-col>
+            </v-row>
+            <v-row class="mb-6" no-gutters>
+              <v-col sm="5" md="6">
+                <v-card class="pa-2" outlined tile>iotem</v-card>
+              </v-col>
+              <v-col sm="5" offset-sm="2" md="6" offset-md="0">
+                <v-card class="pa-2" outlined tile>value</v-card>
+              </v-col>
+            </v-row>
+            <v-row class="mb-6" no-gutters>
+              <v-col sm="5" md="6">
+                <v-card class="pa-2" outlined tile>iotem</v-card>
+              </v-col>
+              <v-col sm="5" offset-sm="2" md="6" offset-md="0">
+                <v-card class="pa-2" outlined tile>value</v-card>
+              </v-col>
+            </v-row>
+            <v-row class="mb-6" no-gutters>
+              <v-col sm="5" md="6">
+                <v-card class="pa-2" outlined tile>iotem</v-card>
+              </v-col>
+              <v-col sm="5" offset-sm="2" md="6" offset-md="0">
+                <v-card class="pa-2" outlined tile>value</v-card>
+              </v-col>
+            </v-row>
+          </v-container>
+
           <div>
-            <v-row v-for="(opp) in oppo" :key="opp.id" class="ml-3">
+            <v-row v-for="(opp) in oppo" :key="opp.id" class="ml-3" v-show="showAnkenList">
               <showAnken :opportunity="opp" :initial="item" />
             </v-row>
           </div>
-        </v-row>
+        </v-container>
         <!-- this is partner-->
 
         <v-row v-if="isPartner == item.id && showPartner" class="mt-3 mr-3 ml-3 mb-3">
@@ -109,6 +166,10 @@ export default nuxtend({
   },
   data() {
     return {
+      createFrom: true,
+      closeForm: false,
+      showAnkenList: true,
+      showFrom: false,
       isPartner: 0,
       isMemo: 0,
       isAnken: 0,

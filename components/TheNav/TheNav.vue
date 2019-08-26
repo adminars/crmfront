@@ -4,7 +4,7 @@
       <div class="pt-3 pr-4">
         <p class="text-right">
           ようこそ！！{{ user.user.familyname }}さん
-          <v-btn class="pl-3 pr-4" color="info">ログアウト</v-btn>
+          <v-btn class="pl-3 pr-4" color="info" @click="logout">ログアウト</v-btn>
         </p>
       </div>
       <v-toolbar
@@ -125,6 +125,21 @@ export default {
       authorised: "isAuthenticated",
       user: "loggedInUser"
     })
-  }
+  },
+  methods: {
+    check(){
+      console.log("successfully logged out")
+     // console.log( $nuxt.$route.path)
+      this.$router.push('/partners')
+
+    },
+    async logout(){
+      await this.$auth.logout()
+      // this.showHideNoti()
+      console.log("successfully logged out")
+      this.$router.push('/partners')
+     // this.$router.push($nuxt.route.path('/partners'))
+    }
+  },
 };
 </script>
