@@ -1,5 +1,6 @@
 import _ from "lodash";
 export const state = () => ({
+  partner: {},
   partners: {
     data: {},
     meta: {},
@@ -15,6 +16,9 @@ export const mutations = {
    */
   SET_PARTNERS(state, payLoad) {
     state.partners.data = payLoad;
+  },
+  SET_PARTNER(state, payLoad) {
+    state.partner = payLoad;
   },
   /**
    *
@@ -55,6 +59,9 @@ export const getters = {
   },
   phartner: state => {
     return state.phartner;
+  },
+  partner: state => {
+    return state.partner;
   },
   /**
    * return @opportunity.link
@@ -101,6 +108,12 @@ export const actions = {
     });
   },
 
+  asyncPartnerList({ commit }) {
+    return this.$axios.$get("partner").then(response => {
+      // console.log(response);
+      commit("SET_PARTNER", response.data);
+    });
+  },
   storeLinepartner({ commit }, { data, config }) {
     //console.log('i came here with data')
     // console.log(data)
