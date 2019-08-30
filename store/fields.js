@@ -9,7 +9,7 @@ export const mutations = {
    * @param {*} payLoad
    */
   SET_FIELD(state, payLoad) {
-    state.fields = payLoad;
+    state.field = payLoad;
   }
 };
 export const getters = {

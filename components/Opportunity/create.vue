@@ -1,299 +1,263 @@
 <template>
-  <div>
-    <v-btn @click="showForm=!showForm">案件作成</v-btn>
-    <div v-if="showForm">
-      <v-form ref="form">
-        <v-text-field label="着信番号" required></v-text-field>
-        <v-btn>ネット割引</v-btn>
-        <v-btn>カード希望</v-btn>
-        <v-btn>金額未案内</v-btn>
-        <v-btn>目視調査無料</v-btn>
-        <v-textarea name="input-7-1" filled label="内容" auto-grow rows="10"></v-textarea>
-        <v-autocomplete
-          v-model="friends"
-          :items="fieldsData"
-          filled
-          chips
-          color="blue-grey lighten-2"
-          label="分野選択してください"
-          item-text="name"
-          item-value="name"
-        >
-          <template v-slot:selection="data">
-            <v-chip
-              v-bind="data.attrs"
-              :input-value="data.selected"
-              @click="data.select"
-              @click:close="remove(data.item)"
-            >{{ data.item.name }}</v-chip>
-          </template>
-          <template v-slot:item="data">
-            <template v-if="typeof data.item !== 'object'">
-              <v-list-item-content v-text="data.item"></v-list-item-content>
-            </template>
-            <template v-else>
-              <v-list-item-content>
-                <v-list-item-title v-html="data.item.name"></v-list-item-title>
-                <v-list-item-subtitle v-html="data.item.group"></v-list-item-subtitle>
-              </v-list-item-content>
-            </template>
-          </template>
-        </v-autocomplete>
-        <!--
-        <v-autocomplete
-          v-model="friends"
-          :items="partners"
-          filled
-          chips
-          color="blue-grey lighten-2"
-          label="分野選択してください"
-          item-text="store_name"
-          item-value="store_name"
-          return-object
-        >
-          <template v-slot:selection="data">
-            <v-chip
-              v-bind="data.attrs"
-              :input-value="data.selected"
-              @click="data.select"
-              @click:close="remove(data.item)"
-            >{{ data.item.store_name }}</v-chip>
-          </template>
-          <template v-slot:item="data">
-            <template>
-              <v-list-item-content>
-                <v-list-item-title v-html="data.item.store_name"></v-list-item-title>
-                <v-list-item-subtitle v-html="data.item.group"></v-list-item-subtitle>
-              </v-list-item-content>
-            </template>
-          </template>
-        </v-autocomplete>-->
-        <!-- <v-autocomplete
-          v-model="createAnken.dial_no"
-          :items="dial"
-          filled
-          chips
-          color="blue-grey lighten-2"
-          label="屋号"
-          item-text="number"
-          item-value="ads"
-          return-object
-        >
-          <template v-slot:selection="data">
-            <v-chip
-              v-bind="data.attrs"
-              :input-value="data.selected"
-              @click="data.select"
-              @click:close="remove(data.item)"
-            >{{ data.item.number }}</v-chip>
-          </template>
-          <template v-slot:item="data">
-            <template>
-              <v-list-item-content>
-                <v-list-item-title v-html="data.item.number"></v-list-item-title>
-                <v-list-item-subtitle v-html="data.item.group"></v-list-item-subtitle>
-              </v-list-item-content>
-            </template>
-          </template>
-        </v-autocomplete>-->
-        <span>
-          <!-- <v-select
-            v-model="createAnken.gender"
-            :items="gender"
-            item-text="name"
-            item-value="id"
-            label="年齢・性別"
-            persistent-hint
-            return-object
-            single-line
-          ></v-select>-->
-        </span>
-        <span>
-          <!-- <v-select
-            v-model="createAnken.gender"
-            :items="gender"
-            item-text="name"
-            item-value="id"
-            label="年齢・性別"
-            persistent-hint
-            return-object
-            single-line
-          ></v-select>-->
-        </span>
-        <v-text-field label="会社名" required></v-text-field>
-        <v-textarea name="input-7-1" filled label="パートナー連絡事項" auto-grow rows="10"></v-textarea>
-        <v-text-field label="ステータス" required></v-text-field>
-        <v-text-field label="ステータス" required></v-text-field>
+  <v-container class="grey lighten-5 align-center pa-0">
+    <v-row class="text-center">
+      <v-col>
+        <!-- this -->
+        <!-- {{ receivedData }} -->
+        <v-btn
+          :color="showForm != true ? 'success': 'warning'"
+          @click="showForm=!showForm"
+        >{{ showForm != true ? '案件作成':'閉じる'}}</v-btn>
+      </v-col>
+    </v-row>
+    <div class="pa-0">
+      <!-- <v-container v-if="showFrom" class="grey lighten-5 align-center"> -->
+      <div v-if="showForm">
+        <v-form ref="form">
+          <v-row justify="center" no-gutters>
+            <v-col cols="3">
+              <span>受付日時：</span>
+              <span>{{ $moment().locale('ja').format('llll') }}</span>
+            </v-col>
+            <v-col cols="3">
+              <span>受付者:</span>
+              <span>{{ $moment().locale('ja').format('llll') }}</span>
+            </v-col>
+          </v-row>
+          <v-row justify="center">
+            <v-col cols="6">
+              <v-text-field v-model="form.incommingPhone" label="着信番号" required></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row justify="center" class="text-center">
+            <v-col cols="3" class="text-center">
+              <v-autocomplete
+                v-model="form.field"
+                :items="receivedData.fields"
+                filled
+                chips
+                color="blue-grey lighten-2"
+                label="屋号を選択してください"
+                item-text="name"
+                item-value="name"
+                class="pa-0"
+                return-object
+              >
+                <template v-slot:selection="data">
+                  <v-chip
+                    v-bind="data.attrs"
+                    :input-value="data.selected"
+                    @click="data.select"
+                    @click:close="remove(data.item)"
+                  >{{ data.item.name }}</v-chip>
+                </template>
+                <template v-slot:item="data">
+                  <template v-if="typeof data.item !== 'object'">
+                    <v-list-item-content v-text="data.item"></v-list-item-content>
+                  </template>
+                  <template v-else>
+                    <v-list-item-content>
+                      <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                      <v-list-item-subtitle v-html="data.item.group"></v-list-item-subtitle>
+                    </v-list-item-content>
+                  </template>
+                </template>
+              </v-autocomplete>
+            </v-col>
+            <v-col cols="3">
+              <v-autocomplete
+                v-model="form.dial"
+                :items="receivedData.dials"
+                filled
+                chips
+                color="blue-grey lighten-2"
+                label="分野選択してください"
+                item-text="name"
+                item-value="name"
+              >
+                <template v-slot:selection="data">
+                  <v-chip
+                    v-bind="data.attrs"
+                    :input-value="data.selected"
+                    @click="data.select"
+                    @click:close="remove(data.item)"
+                  >{{ data.item.number }}</v-chip>
+                </template>
+                <template v-slot:item="data">
+                  <template v-if="typeof data.item !== 'object'">
+                    <v-list-item-content v-text="data.item"></v-list-item-content>
+                  </template>
+                  <template v-else>
+                    <v-list-item-content>
+                      <v-list-item-title v-html="data.item.number"></v-list-item-title>
+                      <v-list-item-subtitle v-html="data.item.group"></v-list-item-subtitle>
+                    </v-list-item-content>
+                  </template>
+                </template>
+              </v-autocomplete>
+            </v-col>
+          </v-row>
+          <v-row justify="center">
+            <v-col cols="6">
+              <v-text-field v-model="form.firstname" class="pa-0 ma-0" label="名前" required></v-text-field>
+            </v-col>
+          </v-row>
 
-        <div>
-          <v-col>
-            <v-btn>show more</v-btn>
-          </v-col>
-          <v-col>
-            <v-text-field label="会社名" required></v-text-field>
-            <v-text-field label="かける電話番号２" required></v-text-field>
-            <v-text-field label="FAX" required></v-text-field>
-          </v-col>
-        </div>
-        <v-btn>登録</v-btn>
-        <v-btn>一時保存</v-btn>
-      </v-form>
-    </div>
-  </div>
-  <!-- <v-container v-if="showFrom" class="grey lighten-5 align-center">
-    <v-form ref="form">
-      <v-text-field v-model="item.tel_number" label="着信番号" required></v-text-field>
-      <v-btn @click="netnam">ネット割引</v-btn>
-      <v-btn @click="cardKibo">カード希望</v-btn>
-      <v-btn @click="bankKibo">金額未案内</v-btn>
-      <v-btn @click="inspectionKibo">目視調査無料</v-btn>
-      <v-textarea v-model="textArea" name="input-7-1" filled label="内容" auto-grow rows="10"></v-textarea>
-      <v-autocomplete
-        v-model="friends"
-        :items="fieldsData"
-        filled
-        chips
-        color="blue-grey lighten-2"
-        label="分野選択してください"
-        item-text="name"
-        item-value="name"
-      >
-        <template v-slot:selection="data">
-          <v-chip
-            v-bind="data.attrs"
-            :input-value="data.selected"
-            @click="data.select"
-            @click:close="remove(data.item)"
-          >{{ data.item.name }}</v-chip>
-        </template>
-        <template v-slot:item="data">
-          <template v-if="typeof data.item !== 'object'">
-            <v-list-item-content v-text="data.item"></v-list-item-content>
-          </template>
-          <template v-else>
-            <v-list-item-content>
-              <v-list-item-title v-html="data.item.name"></v-list-item-title>
-              <v-list-item-subtitle v-html="data.item.group"></v-list-item-subtitle>
-            </v-list-item-content>
-          </template>
-        </template>
-      </v-autocomplete>
-      <v-autocomplete
-        v-model="friends"
-        :items="partners"
-        filled
-        chips
-        color="blue-grey lighten-2"
-        label="分野選択してください"
-        item-text="store_name"
-        item-value="store_name"
-        return-object
-      >
-        <template v-slot:selection="data">
-          <v-chip
-            v-bind="data.attrs"
-            :input-value="data.selected"
-            @click="data.select"
-            @click:close="remove(data.item)"
-          >{{ data.item.store_name }}</v-chip>
-        </template>
-        <template v-slot:item="data">
-          <template>
-            <v-list-item-content>
-              <v-list-item-title v-html="data.item.store_name"></v-list-item-title>
-              <v-list-item-subtitle v-html="data.item.group"></v-list-item-subtitle>
-            </v-list-item-content>
-          </template>
-        </template>
-      </v-autocomplete>
-      <v-autocomplete
-        v-model="createAnken.dial_no"
-        :items="dial"
-        filled
-        chips
-        color="blue-grey lighten-2"
-        label="屋号"
-        item-text="number"
-        item-value="ads"
-        return-object
-      >
-        <template v-slot:selection="data">
-          <v-chip
-            v-bind="data.attrs"
-            :input-value="data.selected"
-            @click="data.select"
-            @click:close="remove(data.item)"
-          >{{ data.item.number }}</v-chip>
-        </template>
-        <template v-slot:item="data">
-          <template>
-            <v-list-item-content>
-              <v-list-item-title v-html="data.item.number"></v-list-item-title>
-              <v-list-item-subtitle v-html="data.item.group"></v-list-item-subtitle>
-            </v-list-item-content>
-          </template>
-        </template>
-      </v-autocomplete>
-      <span>
-        <v-select
-          v-model="createAnken.gender"
-          :items="gender"
-          item-text="name"
-          item-value="id"
-          label="年齢・性別"
-          persistent-hint
-          return-object
-          single-line
-        ></v-select>
-      </span>
-      <span>
-        <v-select
-          v-model="createAnken.gender"
-          :items="gender"
-          item-text="name"
-          item-value="id"
-          label="年齢・性別"
-          persistent-hint
-          return-object
-          single-line
-        ></v-select>
-      </span>
-      <v-text-field v-model="createAnken.company_name" label="会社名" required></v-text-field>
-      <v-textarea
-        v-model="createAnken.partnerNote"
-        name="input-7-1"
-        filled
-        label="パートナー連絡事項"
-        auto-grow
-        rows="10"
-      ></v-textarea>
-      <v-text-field v-model="createAnken.company_name" label="ステータス" required></v-text-field>
-      <v-text-field v-model="createAnken.company_name" label="ステータス" required></v-text-field>
+          <v-row justify="center">
+            <v-col cols="6">
+              <v-text-field v-model="form.phone1" class="pa-0 ma-0" label="かける番号" required></v-text-field>
+            </v-col>
+          </v-row>
 
-      <div>
-        <v-col>
-          <v-btn @click="createMore=!createMore">show more</v-btn>
-        </v-col>
-        <v-col v-if="createMore">
-          <v-text-field v-model="createAnken.company_name" label="会社名" required></v-text-field>
-          <v-text-field v-model="createAnken.call2" label="かける電話番号２" required></v-text-field>
-          <v-text-field v-model="createAnken.fax" label="FAX" required></v-text-field>
-        </v-col>
+          <v-row justify="center">
+            <v-col cols="6">
+              <v-text-field class="pa-0 ma-0" label="住所" required></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row justify="center">
+            <v-col cols="6">
+              <v-btn @click="tsuikajyouhou =!tsuikajyouhou">追加情報</v-btn>
+            </v-col>
+          </v-row>
+
+          <div v-if="tsuikajyouhou" justify="center">
+            <v-row justify="center">
+              <v-col cols="6">
+                <v-text-field class="pa-0 ma-0" label="会社名" required></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row justify="center">
+              <v-col cols="6">
+                <v-text-field class="pa-0 ma-0" label="かける番号２" required></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row justify="center">
+              <v-col cols="6">
+                <v-text-field class="pa-0 ma-0" label="FAX" required></v-text-field>
+              </v-col>
+            </v-row>
+          </div>
+          <v-row justify="center">
+            <v-col cols="6">
+              <v-btn @click="netnam">ネット割引</v-btn>
+              <v-btn @click="cardKibo">カード希望</v-btn>
+              <v-btn @click="bankKibo">金額未案内</v-btn>
+              <v-btn @click="inspectionKibo">目視調査無料</v-btn>
+              <v-textarea
+                v-model="form.trouble"
+                name="input-7-1"
+                filled
+                label="内容"
+                auto-grow
+                rows="6"
+                required
+                class="pa-0 ma-0"
+              ></v-textarea>
+            </v-col>
+          </v-row>
+          <v-row class="pa-0 ma-0" justify="center">
+            <v-col class="pa-0 ma-0" cols="6">
+              <v-textarea
+                v-model="form.note"
+                name="input-7-1"
+                filled
+                label="パートナー連絡事項"
+                auto-grow
+                rows="6"
+                class="pa-0 ma-0"
+              ></v-textarea>
+            </v-col>
+          </v-row>
+          <v-row justify="center" class="pa-0 ma-0">
+            <v-col cols="3" class="pa-0 ma-0">
+              <v-text-field class="pa-0 ma-0" label="年齢" required></v-text-field>
+            </v-col>
+            <v-col cols="3" class="pa-0 ma-0 ml-2">
+              <v-text-field class="pa-0 ma-0" label="性別" required></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row justify="center">
+            <v-col class="pa-0 ma-0" cols="6">
+              <v-autocomplete
+                v-model="form.partnerAccount"
+                :items="receivedData.partners"
+                chips
+                color="blue-grey lighten-2"
+                label="パトナーを選択してください"
+                item-text="name"
+                return-object
+              >
+                <template slot="selection" slot-scope="data">
+                  <v-chip
+                    :selected="data.selected"
+                    @input="data.parent.selectItem(data.item)"
+                  >{{ data.item.store_name }}</v-chip>
+                </template>
+                <template slot="item" slot-scope="data">
+                  <template v-if="typeof data.item !== 'object'">
+                    <v-list-tile-content v-text="data.item"></v-list-tile-content>
+                  </template>
+                  <template v-else>
+                    <v-list-tile-content>
+                      <v-list-tile-title v-html="data.item.store_name"></v-list-tile-title>
+                      <v-list-tile-sub-title v-html="data.item.group"></v-list-tile-sub-title>
+                    </v-list-tile-content>
+                  </template>
+                </template>
+              </v-autocomplete>
+            </v-col>
+          </v-row>
+          <v-row class="text-center pa-0 ma-0">
+            <v-col>
+              <v-btn @click="clicksaveButton">登録</v-btn>
+              <v-btn>一時保存</v-btn>
+            </v-col>
+          </v-row>
+        </v-form>
       </div>
-      <v-btn @click="check">登録</v-btn>
-      <v-btn @click="check">一時保存</v-btn>
-    </v-form>
-  </v-container>-->
+      <!-- </v-container> -->
+    </div>
+  </v-container>
 </template>
 <script>
 export default {
+  props: ["buttonValue", "callNumber", "cfield", "cpartners", "cdial"],
   data() {
     return {
+      receivedData: {
+        fields: this.cfield.data,
+        partners: this.cpartners,
+        dials: this.cdial
+      },
+      tsuikajyouhou: false,
       form: {
+        textArea: "名前:\nかける番号:\nなまえ:\n住所:",
         dial_no: "",
         naiyo: "",
         fieldData: "",
-        partnerNote: ""
+        partnerNote: "",
+        partner_note: "",
+        //from here
+        incommingPhone: this.callNumber,
+        phone1: this.callNumber,
+        field: "",
+        dial: "",
+        firstname: "",
+        familyname: "",
+        company: "",
+        generation: "",
+        gender: "",
+        fax: "",
+        zyusho: "",
+        trouble: "",
+        note: "",
+        status: "",
+        accounts: "",
+        cancelreason: "",
+        workdate: "",
+        account_id: "",
+        partnerAccount: "",
+        secondStatus: ""
       },
       showForm: false,
       fieldsData: [
@@ -324,60 +288,7 @@ export default {
         "Arizona",
         "Arkansas",
         "California",
-        "Colorado",
-        "Connecticut",
-        "Delaware",
-        "District of Columbia",
-        "Federated States of Micronesia",
-        "Florida",
-        "Georgia",
-        "Guam",
-        "Hawaii",
-        "Idaho",
-        "Illinois",
-        "Indiana",
-        "Iowa",
-        "Kansas",
-        "ひらがな",
-        "Kentucky",
-        "Louisiana",
-        "Maine",
-        "Marshall Islands",
-        "Maryland",
-        "Massachusetts",
-        "Michigan",
-        "Minnesota",
-        "Mississippi",
-        "Missouri",
-        "Montana",
-        "Nebraska",
-        "Nevada",
-        "New Hampshire",
-        "New Jersey",
-        "New Mexico",
-        "New York",
-        "North Carolina",
-        "North Dakota",
-        "Northern Mariana Islands",
-        "Ohio",
-        "Oklahoma",
-        "Oregon",
-        "Palau",
-        "Pennsylvania",
-        "Puerto Rico",
-        "Rhode Island",
-        "South Carolina",
-        "South Dakota",
-        "Tennessee",
-        "Texas",
-        "Utah",
-        "Vermont",
-        "Virgin Island",
-        "Virginia",
-        "Washington",
-        "West Virginia",
-        "Wisconsin",
-        "Wyoming"
+        "Colorado"
       ],
       filters: [
         {
@@ -393,6 +304,35 @@ export default {
         }
       ]
     };
+  },
+  watch: {
+    buttonValue: function() {
+      if (this.buttonValue == false) {
+        this.showForm = false;
+      }
+    }
+  },
+
+  methods: {
+    netnam() {
+      this.form.textArea = this.form.textArea + "\ni am rabi";
+      this.form.naiyo = this.form.naiyo + "\n内藤に追加";
+    },
+    cardKibo() {
+      this.form.textArea = this.form.textArea + "\ni have card kibo";
+      this.form.naiyo = this.form.naiyo + "\nもっともっとついか";
+    },
+    bankKibo() {
+      this.form.textArea = this.form.textArea + "\ni have bank kibo";
+      this.form.naiyo = this.form.naiyo + "\nもう一回ついか";
+    },
+    inspectionKibo() {
+      this.form.textArea = this.form.textArea + "\ni have inspectionKibo kibo";
+      this.form.naiyo = this.form.naiyo + "\n最後の追加";
+    },
+    clicksaveButton() {
+      console.log(this.form);
+    }
   }
 };
 </script>
