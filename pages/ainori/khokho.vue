@@ -2,7 +2,8 @@
   <v-container>
     <div>
       <div v-for="(item,key) in lists" :key="key">
-        <khokhoitem :item="item"></khokhoitem>
+        <khokhoitem :item="item" v-on:thisis="rabi(item)"></khokhoitem>
+        <!-- {{ item.tel_number }} -->
       </div>
     </div>
   </v-container>
@@ -60,6 +61,22 @@ export default {
         }
       ]
     };
+  },
+  methods: {
+    emitrabi(value) {
+      console.log(value);
+    },
+    onClick() {
+      console.log(7);
+    },
+
+    toparents() {
+      console.log(7);
+    },
+    rabi() {
+      console.log(this.$emit("ankenButton"));
+      console.log("i");
+    }
   }
 };
 </script>

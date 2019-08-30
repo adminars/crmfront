@@ -57,6 +57,7 @@ export const actions = {
     return this.$axios
       .$get("searchbyphone?phone=" + params.phone)
       .then(response => {
+        //  console.log("i came here");
         // console.log(response.data);
         commit("SET_ANKEN", response.data);
       });

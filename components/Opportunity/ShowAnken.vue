@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- <v-row v-for="(opp) in oppo" :key="opp.id" class="ml-3"> -->
     <v-row v-for="(opp) in opps " :key="opp.id">
       <v-col cols="12" class="pa-0 mt-3">
         <v-row class="ml-2 mb-2" style="font-size:16px;font-weight:bold">
@@ -26,14 +25,8 @@
           <span style="font-weight:bold">連絡事項 :</span>
           <span class="ml-2">{{opp.note}}</span>
         </v-row>
-        <!-- <showAnken :opportunity="oppo" :initial="item" /> -->
       </v-col>
-      <!-- <br /> -->
-      <!-- <row> -->
-      <!-- <toggle-button @change="check" /> -->
-      <!-- </row> -->
     </v-row>
-    <!-- </v-row> -->
   </div>
 </template>
 <script>
