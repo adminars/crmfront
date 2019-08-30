@@ -181,27 +181,30 @@
               <v-autocomplete
                 v-model="form.partnerAccount"
                 :items="receivedData.partners"
+                filled
                 chips
                 color="blue-grey lighten-2"
-                label="パトナーを選択してください"
+                label="分野選択してください"
                 item-text="name"
-                return-object
+                item-value="name"
               >
-                <template slot="selection" slot-scope="data">
+                <template v-slot:selection="data">
                   <v-chip
-                    :selected="data.selected"
-                    @input="data.parent.selectItem(data.item)"
+                    v-bind="data.attrs"
+                    :input-value="data.selected"
+                    @click="data.select"
+                    @click:close="remove(data.item)"
                   >{{ data.item.store_name }}</v-chip>
                 </template>
-                <template slot="item" slot-scope="data">
+                <template v-slot:item="data">
                   <template v-if="typeof data.item !== 'object'">
-                    <v-list-tile-content v-text="data.item"></v-list-tile-content>
+                    <v-list-item-content v-text="data.item"></v-list-item-content>
                   </template>
                   <template v-else>
-                    <v-list-tile-content>
-                      <v-list-tile-title v-html="data.item.store_name"></v-list-tile-title>
-                      <v-list-tile-sub-title v-html="data.item.group"></v-list-tile-sub-title>
-                    </v-list-tile-content>
+                    <v-list-item-content>
+                      <v-list-item-title v-html="data.item.store_name"></v-list-item-title>
+                      <v-list-item-subtitle v-html="data.item.group"></v-list-item-subtitle>
+                    </v-list-item-content>
                   </template>
                 </template>
               </v-autocomplete>
@@ -309,26 +312,40 @@ export default {
     buttonValue: function() {
       if (this.buttonValue == false) {
         this.showForm = false;
+        this.form.field = "";
+        this.form.dial = "";
+        this.form.firstname = "";
+        this.form.familyname = "";
+        this.form.company = "";
+        this.form.generation = "";
+        this.form.gender = "";
+        this.form.fax = "";
+        this.form.zyusho = "";
+        this.form.trouble = "";
+        this.form.note = "";
+        this.form.status = "";
+        this.form.accounts = "";
+        this.form.cancelreason = "";
+        this.form.workdate = "";
+        this.form.account_id = "";
+        this.form.partnerAccount = "";
+        this.form.secondStatus = "";
       }
     }
   },
 
   methods: {
     netnam() {
-      this.form.textArea = this.form.textArea + "\ni am rabi";
-      this.form.naiyo = this.form.naiyo + "\n内藤に追加";
+      this.form.trouble = this.form.trouble + "\n内藤に追加";
     },
     cardKibo() {
-      this.form.textArea = this.form.textArea + "\ni have card kibo";
-      this.form.naiyo = this.form.naiyo + "\nもっともっとついか";
+      this.form.trouble = this.form.trouble + "\nもっともっとついか";
     },
     bankKibo() {
-      this.form.textArea = this.form.textArea + "\ni have bank kibo";
-      this.form.naiyo = this.form.naiyo + "\nもう一回ついか";
+      this.form.trouble = this.form.trouble + "\nもう一回ついか";
     },
     inspectionKibo() {
-      this.form.textArea = this.form.textArea + "\ni have inspectionKibo kibo";
-      this.form.naiyo = this.form.naiyo + "\n最後の追加";
+      this.form.trouble = this.form.trouble + "\n最後の追加";
     },
     clicksaveButton() {
       console.log(this.form);

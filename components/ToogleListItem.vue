@@ -25,7 +25,7 @@
           {{ (!_.isEmpty(item.TypeTwoMemoList)) && (!_.isNull((item.TypeTwoMemoList))) ? (item.TypeTwoMemoList).length: '0' }}
           一メモ
         </v-btn>
-        <v-btn>
+        <v-btn @click="shoetotalmemoList">
           {{ (!_.isEmpty(item.totalMemoList)) && (!_.isNull((item.totalMemoList))) ? (item.totalMemoList).length: '0' }}
           着信
         </v-btn>
@@ -71,6 +71,16 @@
         </v-row>
       </div>
     </div>
+    <div v-show="showtotalmemo" class="item-desc">
+      <div v-if="!_.isEmpty(item.totalMemoList)">
+        <totalmemo :totalmemo="item.totalMemoList" :initial="item"></totalmemo>
+      </div>
+      <div v-else color="primary">
+        <v-row justify="center">
+          <v-col cols="8">着信ありません</v-col>
+        </v-row>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -78,6 +88,7 @@ import showanken from "~/components/Opportunity/ShowAnken";
 import showpartner from "~/components/Partners/partnerdetail";
 import showtypetwo from "~/components/Memos/ShowTypeTwo";
 import createanken from "~/components/Opportunity/create";
+import totalmemo from "~/components/Memos/totalmemo";
 
 export default {
   components: {
@@ -85,7 +96,8 @@ export default {
     // anken,
     createanken,
     showpartner,
-    showtypetwo
+    showtypetwo,
+    totalmemo
   },
   props: ["item", "gfields", "partnerlist", "dials"],
   data() {
@@ -93,6 +105,7 @@ export default {
       fildList: this.gfields,
       partners: this.partnerlist,
       ankenButton: false,
+      showtotalmemo: false,
       partnerButton: false,
       itenAnken: 0,
       message: "",
@@ -105,6 +118,7 @@ export default {
       if (this.ankenButton == true) {
         this.partnerButton = false;
         this.ShowTypeTwoMemo = false;
+        this.showtotalmemo = false;
       }
     },
     getPartner(item) {
@@ -112,22 +126,23 @@ export default {
       if (this.partnerButton == true) {
         this.ankenButton = false;
         this.ShowTypeTwoMemo = false;
+        this.showtotalmemo = false;
       }
-    },
-    emitrabi(event) {
-      this.$emit("click", "someValue");
-    },
-    finished() {
-      this.message = "thisis rabi";
-    },
-    doso(data) {
-      console.log(data);
     },
     ShowTypeTwoMemoList() {
       this.ShowTypeTwoMemo = !this.ShowTypeTwoMemo;
       if (this.ShowTypeTwoMemo == true) {
         this.ankenButton = false;
         this.partnerButton = false;
+        this.showtotalmemo = false;
+      }
+    },
+    shoetotalmemoList() {
+      this.showtotalmemo = !this.showtotalmemo;
+      if (this.showtotalmemo == true) {
+        this.ankenButton = false;
+        this.partnerButton = false;
+        this.ShowTypeTwoMemo = false;
       }
     }
   }
