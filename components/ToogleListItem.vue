@@ -16,10 +16,10 @@
       <v-col cols="4" class="pa-0 mt-3">
         <v-btn
           @click="getAnken(item)"
-        >{{ (!_.isNull(item.opportunity)) ? (item.opportunity).length :0 }}案件</v-btn>
+        >{{ (!_.isEmpty(item.opportunity)) ? (item.opportunity).length :0 }}案件</v-btn>
         <v-btn
           @click="getPartner"
-        >{{ (!_.isNull(item.partners)) ? (item.partners).length : '0' }} パトナー</v-btn>
+        >{{ (!_.isEmpty(item.partners)) ? (item.partners).length : '0' }} パトナー</v-btn>
         <v-btn>P候補</v-btn>
         <v-btn @click="ShowTypeTwoMemoList">
           {{ (!_.isEmpty(item.TypeTwoMemoList)) && (!_.isNull((item.TypeTwoMemoList))) ? (item.TypeTwoMemoList).length: '0' }}
@@ -29,11 +29,13 @@
           {{ (!_.isEmpty(item.totalMemoList)) && (!_.isNull((item.totalMemoList))) ? (item.totalMemoList).length: '0' }}
           着信
         </v-btn>
+        <v-row>
+        </v-row>
         <hr />
       </v-col>
     </v-row>
     <!-- ths is anken releted div -->
-    <div v-show="ankenButton" class="item-desc">
+     <div v-show="ankenButton" class="item-desc">
       <createanken
         :buttonValue="ankenButton"
         :callNumber="item.tel_number"
@@ -41,6 +43,9 @@
         :cpartners="partners"
         :cdial="dials"
       />
+    
+
+     
       <div v-if="!_.isEmpty(item.opportunity)" class="item-desc">
         <showanken :buttonValue="ankenButton" :opportunity="item.opportunity" :initial="item"></showanken>
       </div>
@@ -49,7 +54,7 @@
           <v-col cols="8">案件ありません</v-col>
         </v-row>
       </div>
-    </div>
+    </div> 
 
     <div v-show="partnerButton" class="item-desc">
       <div v-if="!_.isEmpty(item.partners)">
