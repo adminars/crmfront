@@ -2,21 +2,38 @@
   <v-layout>
     <v-flex>
       <h1 class="titleCrm">パトナーメッセージログ</h1>
-      <v-data-table :headers="headers" :items="list.data" item-key="id" class="elevation-1">
+      <v-data-table
+        :headers="headers"
+        :items="list.data"
+        item-key="id"
+        class="elevation-1"
+      >
         <template v-slot:items="props">
-          <td
-            class="text-xs-right"
-          >{{ moment(props.item.created).format('MM DD HH:m') }} {{ props }}</td>
-          <td
-            class="text-xs-right"
-          >{{ props.item.user_id != null ? (props.item.owner_detail.user_id ) : props.item.user_id != null ? (props.item.user_detail.user_id ) : '' }}</td>
-          <td class="text-xs-right">{{ props.item.crmId !== null ? (props.item.crmId):'rabi' }}</td>
-          <td class="text-xs-right">{{ props.item.message !== null ? (props.item.message):'rabi' }}</td>
+          <td class="text-xs-right">
+            {{ moment(props.item.created).format("MM DD HH:m") }} {{ props }}
+          </td>
+          <td class="text-xs-right">
+            {{
+              props.item.user_id != null
+                ? props.item.owner_detail.user_id
+                : props.item.user_id != null
+                ? props.item.user_detail.user_id
+                : ""
+            }}
+          </td>
+          <td class="text-xs-right">
+            {{ props.item.crmId !== null ? props.item.crmId : "rabi" }}
+          </td>
+          <td class="text-xs-right">
+            {{ props.item.message !== null ? props.item.message : "rabi" }}
+          </td>
         </template>
         <template v-slot:item.action="{ item }">
           <!--{{ item }}-->
-          <div v-if="item.status==0">
-            <v-btn small color="primary" @click="check(item)">ラインID追加します</v-btn>
+          <div v-if="item.status == 0">
+            <v-btn small color="primary" @click="check(item)"
+              >ラインID追加します</v-btn
+            >
           </div>
           <div v-else color="success">すでに登録してあります</div>
         </template>
@@ -44,7 +61,9 @@
                   data-vv-as="パトナー名前"
                   v-model="dialogForm.partner_name"
                 />
-                <span style="color:red;">{{ errors.first('partner_name') }}</span>
+                <span style="color:red;">{{
+                  errors.first("partner_name")
+                }}</span>
                 <v-text-field
                   label="パトナーラインID*"
                   type="text"
@@ -55,7 +74,7 @@
                   v-validate="'required'"
                   data-vv-as="パトナーラインID"
                 />
-                <span style="color:red;">{{ errors.first('lineId') }}</span>
+                <span style="color:red;">{{ errors.first("lineId") }}</span>
                 <v-text-field
                   label="パトナーアカウントID*"
                   type="text"
@@ -65,7 +84,7 @@
                   v-validate="'required'"
                   data-vv-as="パトナーアカウントID"
                 />
-                <span style="color:red;">{{ errors.first('partnerid') }}</span>
+                <span style="color:red;">{{ errors.first("partnerid") }}</span>
               </v-flex>
             </v-layout>
           </v-container>
@@ -74,7 +93,9 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="error" text @click="dialog = false">キャンセル</v-btn>
-          <v-btn color="blue darken-1" text @click="handleSavePartner">保存</v-btn>
+          <v-btn color="blue darken-1" text @click="handleSavePartner"
+            >保存</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
